@@ -11,10 +11,11 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import router from './router'
 import store from './store'
+import 'babel-polyfill';
 import i18n from './lang'
 import '@/icons' // icon
 import '@/permission' // permission control
-
+require('babel-polyfill');
 Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false

@@ -1,13 +1,34 @@
 <template>
   <div class="dashboard-container">
     <panel-group @handleSetLineChartData="handleSetLineChartData"></panel-group>
+
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+      <line-chart :chart-data="lineChartData"></line-chart>
+    </el-row>
+
+
+    <el-row :gutter="8">
+      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 11}" :xl="{span: 11}" style="padding-right:8px;margin-bottom:30px;">
+        <transaction-table></transaction-table>
+      </el-col>
+
+      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 7}" :xl="{span: 7}" style="padding-right:8px;margin-bottom:30px;">
+        <div class="chart-wrapper">
+          <bar-chart></bar-chart>
+        </div>
+      </el-col>
+
+    </el-row>
+
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import PanelGroup from './component/PanelGroup'
-
+import LineChart from './component/LineChart'
+import BarChart from './component/BarChart'
+import TransactionTable from './component/TransactionTable'
 const lineChartData = {
   newVisitis: {
     expectedData: [100, 120, 161, 134, 105, 160, 165],
@@ -36,24 +57,36 @@ export default {
     ])
   },
   components:{
-    PanelGroup
+    PanelGroup,
+    LineChart,
+    TransactionTable,
+    BarChart
   },
   methods: {
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
+    }
+  },
+  data(){
+    return {
+      lineChartData: lineChartData.newVisitis
     }
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
+
+
+
+.dashboard-container {
+  padding: 32px;
+  background-color: rgb(240, 242, 245);
+  .chart-wrapper {
+    background: #fff;
+    padding: 16px 16px 0;
+    margin-bottom: 32px;
   }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
+
 }
 </style>

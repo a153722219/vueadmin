@@ -53,6 +53,7 @@ export default {
   methods: {
     generateTitle, // generateTitle by vue-i18n
     generateRoute() {
+        console.log(8)
       if (this.$route.name) {
         return this.$route
       }
@@ -62,6 +63,7 @@ export default {
       return route.path === this.$route.path
     },
     addViewTags() {
+      console.log(7)
       const route = this.generateRoute()
       if (!route) {
         return false
@@ -69,17 +71,22 @@ export default {
       this.$store.dispatch('addVisitedViews', route)
     },
     moveToCurrentTag() {
-      const tags = this.$refs.tag
-      this.$nextTick(() => {
-        for (const tag of tags) {
-          if (tag.to.path === this.$route.path) {
-            this.$refs.scrollPane.moveToTarget(tag.$el)
-            break
+      const tags = this.$refs.tag;
+      if(tags){
+        this.$nextTick(() => {
+          for (const tag of tags) {
+            if (tag.to.path === this.$route.path) {
+              this.$refs.scrollPane.moveToTarget(tag.$el)
+              break
+            }
           }
-        }
-      })
+
+        })
+      }else console.log("catch err");
+
     },
     closeSelectedTag(view) {
+      console.log(5)
       this.$store.dispatch('delVisitedViews', view).then((views) => {
         if (this.isActive(view)) {
           const latestView = views.slice(-1)[0]
@@ -88,27 +95,34 @@ export default {
           } else {
             this.$router.push('/')
           }
+
         }
       })
     },
     closeOthersTags() {
+      console.log(4)
       this.$router.push(this.selectedTag)
       this.$store.dispatch('delOthersViews', this.selectedTag).then(() => {
         this.moveToCurrentTag()
+
       })
     },
     closeAllTags() {
+      console.log(3)
       this.$store.dispatch('delAllViews')
       this.$router.push('/')
     },
     openMenu(tag, e) {
+      console.log(1)
       this.visible = true
       this.selectedTag = tag
       const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
       this.left = e.clientX - offsetLeft + 15 // 15: margin right
       this.top = e.clientY
+
     },
     closeMenu() {
+      console.log(2)
       this.visible = false
     }
   }
