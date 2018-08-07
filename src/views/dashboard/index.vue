@@ -12,10 +12,16 @@
         <transaction-table></transaction-table>
       </el-col>
 
-      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 7}" :xl="{span: 7}" style="padding-right:8px;margin-bottom:30px;">
+      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 8}" :xl="{span: 8}" style="padding-right:8px;margin-bottom:30px;">
         <div class="chart-wrapper">
           <bar-chart></bar-chart>
         </div>
+      </el-col>
+
+      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 5}" :xl="{span: 5}" style="margin-bottom:30px;">
+
+          <box-card></box-card>
+
       </el-col>
 
     </el-row>
@@ -29,6 +35,7 @@ import PanelGroup from './component/PanelGroup'
 import LineChart from './component/LineChart'
 import BarChart from './component/BarChart'
 import TransactionTable from './component/TransactionTable'
+import BoxCard from './component/BoxCard'
 const lineChartData = {
   newVisitis: {
     expectedData: [100, 120, 161, 134, 105, 160, 165],
@@ -60,7 +67,8 @@ export default {
     PanelGroup,
     LineChart,
     TransactionTable,
-    BarChart
+    BarChart,
+    BoxCard
   },
   methods: {
     handleSetLineChartData(type) {

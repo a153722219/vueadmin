@@ -73,8 +73,12 @@ export default {
           order_no:"13112146746",
           price:"4小时",
           status:"offine"
+        },
+        {
+          order_no:"13112146746",
+          price:"4小时",
+          status:"offine"
         }
-
       ];
 
     }
