@@ -52,11 +52,15 @@ export default {
           const text = style.innerText
           return new RegExp(oldVal, 'i').test(text) && !/Chalk Variables/.test(text)
         })
+
+      //console.log(styles)
+
+
       styles.forEach(style => {
         const { innerText } = style
         if (typeof innerText !== 'string') return
-        style.innerText = this.updateStyle(innerText, originalCluster, themeCluster)
-      })
+          style.innerText = this.updateStyle(innerText, originalCluster, themeCluster)
+      });
       this.$message({
         message: '换肤成功',
         type: 'success'
@@ -70,6 +74,22 @@ export default {
       oldCluster.forEach((color, index) => {
         newStyle = newStyle.replace(new RegExp(color, 'ig'), newCluster[index])
       })
+
+      newStyle+=`
+        #app .el-menu{ background-color:${newCluster[3]}!important }
+
+        #app .el-menu-item,.el-submenu__title{ background-color:${newCluster[4]}!important }
+        #app .el-menu-item:hover,.el-submenu__title:hover{ background-color:${newCluster[3]}!important }
+
+        #app .sidebar-container .el-submenu .el-menu-item{ background-color:${newCluster[2]}!important }
+
+        #app .sidebar-container .el-submenu .el-menu-item:hover{ background-color:#${newCluster[0]}!important }
+
+        #app .sidebar-container .nest-menu .el-submenu > .el-submenu__title{ background-color:${newCluster[4]}!important }
+        #app .sidebar-container .nest-menu .el-submenu > .el-submenu__title:hover{ background-color:${newCluster[4]}!important }
+
+
+        `;
       return newStyle
     },
 
