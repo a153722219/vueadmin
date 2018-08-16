@@ -29,11 +29,19 @@
           <span>{{scope.row.regTime}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="是否实名" width="150" align="center">
+      <el-table-column label="是否实名" width="100" align="center">
         <template slot-scope="scope">
           {{scope.row.isReal}}
         </template>
       </el-table-column>
+
+
+      <el-table-column label="设备数量" width="100" align="center">
+        <template slot-scope="scope">
+          {{scope.row.devCount}}
+        </template>
+      </el-table-column>
+
 
       <el-table-column align="center" prop="created_at" label="在线时长" width="200">
         <template slot-scope="scope">
@@ -61,8 +69,8 @@
 
       <el-table-column class-name="status-col" label="操作" align="center"  width="300">
         <template slot-scope="scope">
-          <el-button size="mini" type="danger" @click="del(scope.$index)">删除</el-button>
-          <el-button size="mini" @click="modifyStatus(scope.$index,scope.row.status)" :type="scope.row.status=='normal'?'primary':'danger'">{{scope.row.status=='normal'?"冻结":"解冻"}}</el-button>
+          <!--<el-button size="mini" type="danger" @click="del(scope.$index)">删除</el-button>-->
+          <!--<el-button size="mini" @click="modifyStatus(scope.$index,scope.row.status)" :type="scope.row.status=='normal'?'primary':'danger'">{{scope.row.status=='normal'?"冻结":"解冻"}}</el-button>-->
           <el-button size="mini" @click="showModifyDialog(scope.row)" type="success">修改</el-button>
         </template>
       </el-table-column>
@@ -185,6 +193,7 @@ export default {
             regTime:"2015-1-15",
             isReal:"否",
             status:"normal",
+            devCount:15,
             display_time:"53小时",
             company:"广州亿达科技有限公司",
             Identity:"普通用户"
@@ -195,6 +204,7 @@ export default {
             regTime:"2015-1-15",
             isReal:"否",
             status:"normal",
+            devCount:15,
             display_time:"53小时",
             company:"广州亿达科技有限公司",
             Identity:"普通用户"
@@ -206,6 +216,7 @@ export default {
             regTime:"2015-1-15",
             isReal:"否",
             status:"disable",
+            devCount:15,
             display_time:"53小时",
             company:"广州亿达科技有限公司",
             Identity:"普通用户"
@@ -218,6 +229,7 @@ export default {
             regTime:"2015-1-15",
             isReal:"否",
             status:"disable",
+            devCount:15,
             display_time:"53小时",
             company:"广州亿达科技有限公司",
             Identity:"普通用户"
@@ -229,6 +241,7 @@ export default {
             username:"17606637573",
             regTime:"2015-1-15",
             isReal:"否",
+            devCount:15,
             status:"disable",
             display_time:"53小时",
             company:"广州亿达科技有限公司",

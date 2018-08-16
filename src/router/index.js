@@ -41,44 +41,43 @@ export const constantRouterMap = [
 
 
 
-
-
   {
     path: '/manage',
     component: Layout,
-    redirect: '/manage/table',
+    redirect: '/manage/users',
     name: 'Manage',
     meta: { title: 'Manage', icon: 'example' },
     children: [
       {
         path: 'users',
         name: 'Users',
-        component: () => import('@/views/table/index'),
+        component: () => import('@/views/manage/userList/index'),
         meta: { title: 'Users', icon: 'user' }
       },
       {
         path: 'devices',
         name: 'Devices',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Devices', icon: 'tree' }
-      }
+        component: () => import('@/views/manage/devList/index'),
+        meta: { title: 'Devices', icon: 'tree' },
+
+      },
+      { path: 'devInfo/:id(\\d+)', component: () => import('@/views/manage/devList/detail/index'), name: 'detail', meta: { title: 'devInfo', noCache: true }, hidden: true }
     ]
   },
-
   {
-    path: '/form',
+    path: '/guide',
     component: Layout,
     children: [
       {
         path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        name: 'guide',
+        component: () => import('@/views/guide/index'),
+        meta: { title: 'guide', icon: 'guide' }
       }
     ]
   },
 
-  {
+  /*{
     path: '/nested',
     component: Layout,
     redirect: '/nested/menu1',
@@ -134,7 +133,31 @@ export const constantRouterMap = [
         meta: { title: 'menu2' }
       }
     ]
+  },*/
+
+
+  {
+    path: '/error',
+    component: Layout,
+    redirect: '/error/401',
+    name: 'errorPage',
+    meta: { title: 'errorPage', icon: '404' },
+    children: [
+      {
+        path: '401',
+        name: '401',
+        component: () => import('@/views/401'),
+        meta: { title: '401', icon: 'error' }
+      },
+      {
+        path: '404',
+        name: '404',
+        component: () => import('@/views/404'),
+        meta: { title: '404', icon: 'error' }
+      }
+    ]
   },
+
 
   { path: '*', redirect: '/404', hidden: true }
 ]

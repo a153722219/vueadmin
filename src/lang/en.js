@@ -1,6 +1,8 @@
 export default {
   route: {
+    errorPage:"errorPage",
     dashboard: 'dashboard',
+    devInfo:"Info",
     introduction: 'Introduction',
     documentation: 'Documentation',
     guide: 'Guide',
@@ -153,5 +155,9 @@ export default {
     close: 'Close',
     closeOthers: 'Close Others',
     closeAll: 'Close All'
+  },
+  devices:{
+    searchMT:"MtBrand",
+    searchTitle:""
   }
 }

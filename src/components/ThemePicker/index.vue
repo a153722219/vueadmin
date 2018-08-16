@@ -70,25 +70,19 @@ export default {
 
   methods: {
     updateStyle(style, oldCluster, newCluster) {
-      let newStyle = style
+      let newStyle = style;
       oldCluster.forEach((color, index) => {
         newStyle = newStyle.replace(new RegExp(color, 'ig'), newCluster[index])
       })
 
       newStyle+=`
         #app .el-menu{ background-color:${newCluster[3]}!important }
-
         #app .el-menu-item,.el-submenu__title{ background-color:${newCluster[4]}!important }
         #app .el-menu-item:hover,.el-submenu__title:hover{ background-color:${newCluster[3]}!important }
-
         #app .sidebar-container .el-submenu .el-menu-item{ background-color:${newCluster[2]}!important }
-
         #app .sidebar-container .el-submenu .el-menu-item:hover{ background-color:#${newCluster[0]}!important }
-
         #app .sidebar-container .nest-menu .el-submenu > .el-submenu__title{ background-color:${newCluster[4]}!important }
         #app .sidebar-container .nest-menu .el-submenu > .el-submenu__title:hover{ background-color:${newCluster[4]}!important }
-
-
         `;
       return newStyle
     },

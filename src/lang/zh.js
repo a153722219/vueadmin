@@ -1,6 +1,9 @@
 export default {
   route: {
+    errorPage:"错误页面",
+
     dashboard: '首页',
+    devInfo:"设备详情",
     introduction: '简述',
     documentation: '文档',
     guide: '引导页',
@@ -93,7 +96,7 @@ export default {
     switchRoles: '切换权限'
   },
   guide: {
-    description: '引导页对于一些第一次进入项目的人很有用，你可以简单介绍下项目的功能。本 Demo 是基于',
+    description: '引导页对于一些第一次进入本系统的人很有用，下面简单介绍下本系统的功能。',
     button: '打开引导'
   },
   components: {
@@ -154,5 +157,10 @@ export default {
     close: '关闭',
     closeOthers: '关闭其它',
     closeAll: '关闭所有'
+  },
+
+  devices:{
+    searchTitle:"按名字搜索",
+    searchMT:"机床品牌"
   }
 }
