@@ -33,50 +33,50 @@
       <el-table-column label="监管人" width="200" align="center">
         <template slot-scope="scope">
 
-          <span>{{scope.row.watcher}}</span>
+          <span>{{scope.row.isSupervisor==1?scope.row.telephone:"-"}}</span>
         </template>
       </el-table-column>
       <el-table-column label="MAC地址"  align="center">
         <template slot-scope="scope">
-          {{scope.row.MAC}}
+          {{scope.row.mac}}
         </template>
       </el-table-column>
 
 
       <el-table-column label="机床品牌" width="150" align="center">
         <template slot-scope="scope">
-          {{scope.row.MT_brand}}
+          {{scope.row.minf}}
         </template>
       </el-table-column>
 
 
       <el-table-column align="center" prop="created_at" label="控制器品牌" width="150">
         <template slot-scope="scope">
-          <span>{{scope.row.Controller_brand}}</span>
+          <span>{{scope.row.cinf}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="created_at" width="140" label="实时状态数量">
         <template slot-scope="scope">
-          <span>{{scope.row.rCnt}}</span>
+          <span>{{scope.row.rStateCnt}}</span>
         </template>
       </el-table-column>
 
       <el-table-column class-name="status-col" label="历史状态数量" width="140" align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.hCnt}}</span>
+          <span>{{scope.row.hstatecnt}}</span>
         </template>
       </el-table-column>
 
       <el-table-column class-name="status-col" label="在线状态" width="150" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{scope.row.status}}</el-tag>
+          <el-tag type="success">online</el-tag>
         </template>
       </el-table-column>
 
 
       <el-table-column class-name="status-col" label="操作" align="center"  width="220">
         <template slot-scope="scope">
-          <router-link :to="'/manage/devInfo/'+scope.$index">
+          <router-link :to="'/manage/devInfo/'+scope.row.id">
             <el-button size="mini" type="primary" >详情</el-button>
           </router-link>
 
@@ -89,14 +89,14 @@
 
 
     <div class="pagination-container">
-      <el-pagination background  layout="total, sizes, prev, pager, next, jumper">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pno" :page-sizes="[10,20,50]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
   </div>
 </template>
 
 <script>
-  //import { getList } from '@/api/table'
+  import { fetchDevList } from '@/api/fetchDevList'
   import waves from '@/directive/waves' // 水波纹指令
   export default {
     data() {
@@ -104,6 +104,9 @@
         list: null,
         listLoading: true,
         dialogFormVisible:false,
+        pno:1,
+        limit:10,
+        total:0,
         listQuery:{
             mt_brand:""
         },
@@ -133,13 +136,25 @@
       }
     },
     created() {
-      this.fetchData()
+
 
     },
     mounted(){
-
+      this.fetchData()
     },
     methods: {
+
+      handleCurrentChange(val){
+
+        this.pno=val;
+        this.fetchData();
+      },
+
+
+      handleSizeChange(val){
+        this.limit=val;
+        this.fetchData();
+      },
 
       del(key){
         this.list.splice(key,1);
@@ -150,66 +165,16 @@
 
       },
 
-
-
-
       fetchData() {
         this.listLoading = true;
-//      getList(this.listQuery).then(response => {
-//        this.list = response.data.items
-//        this.listLoading = false
-//      })
 
-        setTimeout( ()=> {
-          this.list=[
-            {
-                devId:114,
-                devName:"A6-ZJX",
-                watcher:"17606637573",
-                MAC:"000000000000",
-                MT_brand:"测试品牌",
-                Controller_brand:"测试品牌",
-                rCnt:11,
-                hCnt:2,
-                status:"online"
-            },
-            {
-              devId:114,
-              devName:"A6-ZJX",
-              watcher:"17606637573",
-              MAC:"000000000000",
-              MT_brand:"测试品牌",
-              Controller_brand:"测试品牌",
-              rCnt:11,
-              hCnt:2,
-              status:"online"
-            },
-            {
-              devId:114,
-              devName:"A6-ZJX",
-              watcher:"17606637573",
-              MAC:"000000000000",
-              MT_brand:"测试品牌",
-              Controller_brand:"测试品牌",
-              rCnt:11,
-              hCnt:2,
-              status:"online"
-            },
-            {
-              devId:114,
-              devName:"A6-ZJX",
-              watcher:"17606637573",
-              MAC:"000000000000",
-              MT_brand:"测试品牌",
-              Controller_brand:"测试品牌",
-              rCnt:11,
-              hCnt:2,
-              status:"online"
-            }
+        fetchDevList(this.pno,this.limit).then(res=>{
+          this.list=res.data.listData;
+          this.pno=res.data.pno;
+          this.total=res.data.total;
+          setTimeout(()=>{this.listLoading = false;},500)
+        });
 
-          ];
-          this.listLoading = false
-        },2000);
       }
     }
   }

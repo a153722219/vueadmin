@@ -27,20 +27,27 @@ const user = {
   actions: {
     // 登录
     Login({ commit }, userInfo) {
+
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        const  data ={code:20000,data:{token:"admin"}};
-        setToken(data.data.token);
-        commit('SET_TOKEN', data.data.token);
-        resolve();
-        // login(username, userInfo.password).then(response => {
-        //   const data = response.data
-        //   setToken(data.token)
-        //   commit('SET_TOKEN', data.token)
-        //   resolve()
-        // }).catch(error => {
-        //   reject(error)
-        // })
+
+        // if(username=="admin" && userInfo.password=="hustadmin"){
+        //   const  data ={code:20000,data:{token:"admin"}};
+        //   setToken(data.data.token);
+        //   commit('SET_TOKEN', data.data.token);
+        //   resolve();
+        // }else{
+        //   reject();
+        // }
+
+        login(username, userInfo.password).then(response => {
+          const data = response.data
+          setToken(data.cookie)
+          commit('SET_TOKEN', data.cookie)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
       })
     },
 
@@ -48,9 +55,7 @@ const user = {
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
           const data = {code:20000,data:{roles:["admin"],name:"admin",avatar:"https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"}}
-
           commit('SET_ROLES', data.data.roles)
-
           commit('SET_NAME', data.data.name)
           commit('SET_AVATAR', data.data.avatar)
           resolve(data)
@@ -75,14 +80,19 @@ const user = {
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
-          removeToken()
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
+
+        commit('SET_TOKEN', '')
+        commit('SET_ROLES', [])
+        removeToken()
+        resolve()
+        // logout(state.token).then(() => {
+        //   commit('SET_TOKEN', '')
+        //   commit('SET_ROLES', [])
+        //   removeToken()
+        //   resolve()
+        // }).catch(error => {
+        //   reject(error)
+        // })
       })
     },
 

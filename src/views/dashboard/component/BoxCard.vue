@@ -7,16 +7,16 @@
       <pan-thumb class="panThumb" :image="avatar"></pan-thumb>
       <mallki className='mallki-text' text='会员分布'></mallki>
       <div style="padding-top:35px;" class='progress-item'>
-        <span>普通用户</span>
-        <el-progress :percentage="70"></el-progress>
+        <span>实名用户</span>
+        <el-progress :percentage="cardData.realnameCount*100"></el-progress>
       </div>
       <div class='progress-item'>
-        <span>开发工程师</span>
-        <el-progress :percentage="18"></el-progress>
+        <span>未实名用户</span>
+        <el-progress :percentage="cardData.inrealnameCount*100"></el-progress>
       </div>
       <div class='progress-item'>
-        <span>超级用户</span>
-        <el-progress :percentage="12"></el-progress>
+        <span>公司认证用户</span>
+        <el-progress :percentage="cardData.comvailCount*100"></el-progress>
       </div>
        <!--<div class='progress-item'>-->
         <!--<span>ESLint</span>-->
@@ -42,6 +42,21 @@ export default {
       }
     }
   },
+
+  props:{
+      cardData:{
+          type:Object,
+          default:function () {
+            return {
+              comvailCount:0,
+              inrealnameCount:0,
+              realnameCount:0
+            }
+          }
+      }
+
+  },
+
   computed: {
     ...mapGetters([
       'name',

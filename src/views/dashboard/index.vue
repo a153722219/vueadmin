@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-container">
-    <panel-group @handleSetLineChartData="handleSetLineChartData"></panel-group>
+    <panel-group :activeDevCount="panelData.activeDevCount" :activeUserCount="panelData.activeUserCount" :devCount="panelData.devCount" :userCount="panelData.userCount"></panel-group>
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <line-chart :chart-data="lineChartData"></line-chart>
@@ -9,7 +9,7 @@
 
     <el-row :gutter="8">
       <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 11}" :xl="{span: 11}" style="padding-right:8px;margin-bottom:30px;">
-        <transaction-table></transaction-table>
+        <transaction-table :list="onlineData"></transaction-table>
       </el-col>
 
       <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 8}" :xl="{span: 8}" style="padding-right:8px;margin-bottom:30px;">
@@ -20,7 +20,7 @@
 
       <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 5}" :xl="{span: 5}" style="margin-bottom:30px;">
 
-          <box-card></box-card>
+          <box-card :cardData="cardData"></box-card>
 
       </el-col>
 
@@ -36,24 +36,8 @@ import LineChart from './component/LineChart'
 import BarChart from './component/BarChart'
 import TransactionTable from './component/TransactionTable'
 import BoxCard from './component/BoxCard'
-const lineChartData = {
-  newVisitis: {
-    expectedData: [100, 120, 161, 134, 105, 160, 165],
-    actualData: [120, 82, 91, 154, 162, 140, 145]
-  },
-  messages: {
-    expectedData: [200, 192, 120, 144, 160, 130, 140],
-    actualData: [180, 160, 151, 106, 145, 150, 130]
-  },
-  purchases: {
-    expectedData: [80, 100, 121, 104, 105, 90, 100],
-    actualData: [120, 90, 100, 138, 142, 130, 130]
-  },
-  shoppings: {
-    expectedData: [130, 140, 141, 142, 145, 150, 160],
-    actualData: [120, 82, 91, 154, 162, 140, 130]
-  }
-}
+import fetchChart from '@/api/fetchChart'
+import { fetchOnlineTime } from '@/api/fetchOnlineTime'
 
 export default {
   name: 'dashboard',
@@ -71,13 +55,49 @@ export default {
     BoxCard
   },
   methods: {
-    handleSetLineChartData(type) {
-      this.lineChartData = lineChartData[type]
-    }
+
   },
+
+  mounted(){
+      //获取顶部图表数据
+    fetchChart().then(res=>{
+        this.lineChartData.dateActiveCount=res.data.dateActiveCount.reverse();
+        this.lineChartData.dateRegCount=res.data.dateRegCount.reverse();
+        this.panelData.activeDevCount=res.data.activeDevCount;
+        this.panelData.activeUserCount=res.data.activeUserCount;
+        this.panelData.devCount=res.data.devCount;
+        this.panelData.userCount=res.data.userCount;
+    });
+
+
+    fetchOnlineTime().then(res=>{
+
+        this.onlineData=res.data.activeUsers;
+        this.cardData.comvailCount=res.data.comvailCount;
+        this.cardData.inrealnameCount=res.data.inrealnameCount;
+        this.cardData.realnameCount=res.data.realnameCount;
+    });
+
+  },
+
   data(){
     return {
-      lineChartData: lineChartData.newVisitis
+      lineChartData: {
+        dateActiveCount:[],
+        dateRegCount:[]
+      },
+      panelData:{
+        activeDevCount:0,
+        activeUserCount:0,
+        devCount:0,
+        userCount:0
+      },
+      onlineData:[],
+      cardData:{
+        comvailCount:0,
+        inrealnameCount:0,
+        realnameCount:0
+      }
     }
   }
 }

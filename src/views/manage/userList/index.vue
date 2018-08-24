@@ -1,10 +1,10 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-input style="width: 200px;" class="filter-item" :placeholder="$t('table.title')">
+      <el-input ref="searchkey" style="width: 200px;" class="filter-item" :placeholder="$t('table.title')">
       </el-input>
 
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search">{{$t('table.search')}}</el-button>
+      <el-button class="filter-item" @click="search" type="primary" v-waves icon="el-icon-search">{{$t('table.search')}}</el-button>
 
     </div>
 
@@ -20,18 +20,18 @@
 
       <el-table-column label="用户名" width="200" align="center">
         <template slot-scope="scope">
-          {{scope.row.username}}
+          {{scope.row.telephone}}
         </template>
       </el-table-column>
       <el-table-column label="注册时间" width="200" align="center">
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
-          <span>{{scope.row.regTime}}</span>
+          <span>{{scope.row.regTime | parseTime}}</span>
         </template>
       </el-table-column>
       <el-table-column label="是否实名" width="100" align="center">
         <template slot-scope="scope">
-          {{scope.row.isReal}}
+          {{scope.row.is_realname_valified==0?"否":"是"}}
         </template>
       </el-table-column>
 
@@ -45,35 +45,35 @@
 
       <el-table-column align="center" prop="created_at" label="在线时长" width="200">
         <template slot-scope="scope">
-          <span>{{scope.row.display_time}}</span>
+          <span>{{scope.row.onlineTime | onlineTime}}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" prop="created_at" label="所属公司">
         <template slot-scope="scope">
-          <span>{{scope.row.company}}</span>
+          <span>{{scope.row.comName}}</span>
         </template>
       </el-table-column>
 
       <el-table-column class-name="status-col" label="角色信息" width="150" align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.Identity}}</span>
+          <span>普通用户</span>
         </template>
       </el-table-column>
 
       <el-table-column class-name="status-col" label="帐号状态" width="150" align="center">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{scope.row.status}}</el-tag>
+          <el-tag :type="scope.row.status | statusFilter">{{scope.row.is_delete==0?"normal":"disable"}}</el-tag>
         </template>
       </el-table-column>
 
 
-      <el-table-column class-name="status-col" label="操作" align="center"  width="300">
-        <template slot-scope="scope">
-          <!--<el-button size="mini" type="danger" @click="del(scope.$index)">删除</el-button>-->
-          <!--<el-button size="mini" @click="modifyStatus(scope.$index,scope.row.status)" :type="scope.row.status=='normal'?'primary':'danger'">{{scope.row.status=='normal'?"冻结":"解冻"}}</el-button>-->
-          <el-button size="mini" @click="showModifyDialog(scope.row)" type="success">修改</el-button>
-        </template>
-      </el-table-column>
+      <!--<el-table-column class-name="status-col" label="操作" align="center"  width="300">-->
+        <!--<template slot-scope="scope">-->
+          <!--&lt;!&ndash;<el-button size="mini" type="danger" @click="del(scope.$index)">删除</el-button>&ndash;&gt;-->
+          <!--&lt;!&ndash;<el-button size="mini" @click="modifyStatus(scope.$index,scope.row.status)" :type="scope.row.status=='normal'?'primary':'danger'">{{scope.row.status=='normal'?"冻结":"解冻"}}</el-button>&ndash;&gt;-->
+          <!--<el-button size="mini" @click="showModifyDialog(scope.row)" type="success">修改</el-button>-->
+        <!--</template>-->
+      <!--</el-table-column>-->
 
     </el-table>
 
@@ -92,20 +92,31 @@
       </div>
     </el-dialog>
 
+
+
     <div class="pagination-container">
-      <el-pagination background  layout="total, sizes, prev, pager, next, jumper">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pno" :page-sizes="[10,20,50]" :page-size="limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
+
+
+
   </div>
 </template>
 
 <script>
 //import { getList } from '@/api/table'
 import waves from '@/directive/waves' // 水波纹指令
+import fetchUserList from '@/api/fetchUserList' // 水波纹指令
+
 export default {
   data() {
     return {
       list: null,
+      pno:1,
+      limit:10,
+      total:0,
+      key:"",
       listLoading: true,
       dialogFormVisible:false,
       rules: {
@@ -130,16 +141,65 @@ export default {
         disable: 'danger'
       }
       return statusMap[status]
+    },
+
+    parseTime(time) {
+      if (arguments.length === 0) {
+        return null
+      }
+      const format = '{y}-{m}-{d} {h}:{i}:{s}'
+      let date = new Date(parseInt(time))
+      const formatObj = {
+        y: date.getFullYear(),
+        m: date.getMonth() + 1,
+        d: date.getDate(),
+        h: date.getHours(),
+        i: date.getMinutes(),
+        s: date.getSeconds(),
+        a: date.getDay()
+      }
+      const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
+        let value = formatObj[key]
+        if (key === 'a') return ['一', '二', '三', '四', '五', '六', '日'][value - 1]
+        if (result.length > 0 && value < 10) {
+          value = '0' + value
+        }
+        return value || 0
+      })
+      return time_str
+    },
+    onlineTime(time){
+      return parseInt(time/1000/60/60)+"小时"
     }
   },
   created() {
-    this.fetchData()
+    this.fetchData(1,10)
 
   },
   mounted(){
 
   },
+
+
+
+
   methods: {
+
+    handleCurrentChange(val){
+
+        this.pno=val;
+        this.fetchData();
+    },
+
+    search(){
+        this.key=this.$refs.searchkey.$el.children[0].value;
+        this.fetchData();
+    },
+
+    handleSizeChange(val){
+        this.limit=val;
+        this.fetchData();
+    },
 
     closeDialog(){
 
@@ -179,78 +239,20 @@ export default {
 
 
     fetchData() {
-      this.listLoading = true;
+      //this.listLoading = true;
 //      getList(this.listQuery).then(response => {
 //        this.list = response.data.items
 //        this.listLoading = false
 //      })
+      this.listLoading = true;
+      fetchUserList(this.pno,this.limit,this.key).then(res=>{
+          this.list=res.data.listData;
+          this.pno=res.data.pno;
+          this.total=res.data.total;
+          setTimeout(()=>{this.listLoading = false;},500)
+      });
 
-      setTimeout( ()=> {
-        this.list=[
-          {
-            id:0,
-            username:"17606637573",
-            regTime:"2015-1-15",
-            isReal:"否",
-            status:"normal",
-            devCount:15,
-            display_time:"53小时",
-            company:"广州亿达科技有限公司",
-            Identity:"普通用户"
-          },
-          {
-            id:1,
-            username:"17606637573",
-            regTime:"2015-1-15",
-            isReal:"否",
-            status:"normal",
-            devCount:15,
-            display_time:"53小时",
-            company:"广州亿达科技有限公司",
-            Identity:"普通用户"
-          },
 
-          {
-            id:2,
-            username:"17606637573",
-            regTime:"2015-1-15",
-            isReal:"否",
-            status:"disable",
-            devCount:15,
-            display_time:"53小时",
-            company:"广州亿达科技有限公司",
-            Identity:"普通用户"
-          }
-          ,
-
-          {
-            id:3,
-            username:"17606637573",
-            regTime:"2015-1-15",
-            isReal:"否",
-            status:"disable",
-            devCount:15,
-            display_time:"53小时",
-            company:"广州亿达科技有限公司",
-            Identity:"普通用户"
-          }
-          ,
-
-          {
-            id:4,
-            username:"17606637573",
-            regTime:"2015-1-15",
-            isReal:"否",
-            devCount:15,
-            status:"disable",
-            display_time:"53小时",
-            company:"广州亿达科技有限公司",
-            Identity:"普通用户"
-          }
-
-        ];
-        this.listLoading = false
-      },2000);
     }
   }
 }

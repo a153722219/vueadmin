@@ -1,46 +1,46 @@
 <template>
   <el-row class="panel-group" :gutter="40">
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class='card-panel' @click="handleSetLineChartData('newVisitis')">
+      <div class='card-panel'>
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="peoples" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">注册用户</div>
-          <count-to class="card-panel-num" :startVal="0" :endVal="102400" :duration="2600"></count-to>
+          <count-to class="card-panel-num" :startVal="0" :endVal="userCount" :duration="2600"></count-to>
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('messages')">
+      <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-message">
           <svg-icon icon-class="message" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">今日活跃</div>
-          <count-to class="card-panel-num" :startVal="0" :endVal="81212" :duration="3000"></count-to>
+          <count-to class="card-panel-num" :startVal="0" :endVal="activeUserCount" :duration="3000"></count-to>
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('purchases')">
+      <div class="card-panel">
         <div class="card-panel-icon-wrapper icon-money">
           <svg-icon icon-class="international" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">设备数量</div>
-          <count-to class="card-panel-num" :startVal="0" :endVal="9280" :duration="3200"></count-to>
+          <count-to class="card-panel-num" :startVal="0" :endVal="devCount" :duration="3200"></count-to>
         </div>
       </div>
     </el-col>
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
+      <div class="card-panel" >
         <div class="card-panel-icon-wrapper icon-shoppingCard">
           <svg-icon icon-class="chart" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">上线数量</div>
-          <count-to class="card-panel-num" :startVal="0" :endVal="13600" :duration="3600"></count-to>
+          <count-to class="card-panel-num" :startVal="0" :endVal="activeDevCount" :duration="3600"></count-to>
         </div>
       </div>
     </el-col>
@@ -50,13 +50,40 @@
 <script>
   import CountTo from 'vue-count-to'
   export default {
+    props:{
+      userCount: {
+        type: Number,
+        default: 0
+      },
+      devCount: {
+        type: Number,
+        default: 0
+      },
+      activeUserCount: {
+        type: Number,
+        default: 0
+      },
+      activeDevCount: {
+        type: Number,
+        default: 0
+      }
+
+    },
+
     components: {
       CountTo
     },
+    data(){
+        return{
+
+        }
+    },
+
+
     methods: {
-      handleSetLineChartData(type) {
-        this.$emit('handleSetLineChartData', type)
-      }
+//      handleSetLineChartData(type) {
+//        this.$emit('handleSetLineChartData', type)
+//      }
     }
   }
 </script>

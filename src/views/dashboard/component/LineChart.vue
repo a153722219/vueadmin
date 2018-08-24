@@ -72,7 +72,7 @@ export default {
     }
   },
   methods: {
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions({ dateRegCount, dateActiveCount } = {}) {
       this.chart.setOption({
         xAxis: {
           data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -115,7 +115,7 @@ export default {
           },
           smooth: true,
           type: 'line',
-          data: expectedData,
+          data: dateRegCount,
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
         },
@@ -135,7 +135,7 @@ export default {
               }
             }
           },
-          data: actualData,
+          data: dateActiveCount,
           animationDuration: 2800,
           animationEasing: 'quadraticOut'
         }]
