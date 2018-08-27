@@ -54,26 +54,18 @@ const user = {
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-          const data = {code:20000,data:{roles:["admin"],name:"admin",avatar:"https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"}}
-          commit('SET_ROLES', data.data.roles)
-          commit('SET_NAME', data.data.name)
-          commit('SET_AVATAR', data.data.avatar)
-          resolve(data)
-        // getInfo(state.token).then(response => {
-        //   const datas = response.data;
-        //
-        //
-        //   if (data.roles && data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
-        //     commit('SET_ROLES', data.roles)
-        //   } else {
-        //     reject('getInfo: roles must be a non-null array !')
-        //   }
-        //   commit('SET_NAME', data.name)
-        //   commit('SET_AVATAR', data.avatar)
-        //   resolve(response)
-        // }).catch(error => {
-        //   reject(error)
-        // })
+        getInfo(state.token).then(response => {
+          if (response.data.roles && response.data.roles.length > 0) { // 验证返回的roles是否是一个非空数组
+            commit('SET_ROLES', response.data.roles)
+          } else {
+            reject('getInfo: roles must be a non-null array !')
+          }
+          commit('SET_NAME', response.data.name)
+          commit('SET_AVATAR', response.data.avatar)
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
       })
     },
 

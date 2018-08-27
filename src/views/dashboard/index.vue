@@ -8,7 +8,7 @@
 
 
     <el-row :gutter="8">
-      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 11}" :xl="{span: 11}" style="padding-right:8px;margin-bottom:30px;">
+      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 10}" :xl="{span: 11}" style="padding-right:8px;margin-bottom:30px;">
         <transaction-table :list="onlineData"></transaction-table>
       </el-col>
 
@@ -18,10 +18,8 @@
         </div>
       </el-col>
 
-      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 5}" :xl="{span: 5}" style="margin-bottom:30px;">
-
+      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 6}" :xl="{span: 5}" style="margin-bottom:30px;">
           <box-card :cardData="cardData"></box-card>
-
       </el-col>
 
     </el-row>
@@ -104,8 +102,6 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-
-
 
 .dashboard-container {
   padding: 32px;

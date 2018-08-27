@@ -11,11 +11,11 @@ export function login(name, pwd) {
   })
 }
 
-export function getInfo(token) {
+export function getInfo(cookie) {
   return request({
-    url: '/user/info',
+    url: '/api/admin/user/info',
     method: 'get',
-    params: { token }
+    params: { cookie }
   })
 }
 
