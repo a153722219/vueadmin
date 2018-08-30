@@ -32,6 +32,10 @@
       title:{
           type:String,
           default:"标题"
+      },
+      value:{
+        type:Number,
+        default:0
       }
     },
     data() {
@@ -61,6 +65,10 @@
         //this.chart = echarts.init(this.$el, 'macarons')
         this.chart = echarts.init(this.$refs.chart, 'macarons')
 
+        this.pain();
+      },
+
+      pain(){
         this.chart.setOption( {
           tooltip : {
             formatter: "{a} <br/>{b} : {c}%"
@@ -75,7 +83,7 @@
               name: '业务指标',
               type: 'gauge',
               detail: {formatter:'{value}%'},
-              data: [{value: 50, name: this.title}
+              data: [{value: this.value, name: this.title}
               ]
             }
           ]

@@ -12,7 +12,12 @@ const service = axios.create({
 // request拦截器
 service.interceptors.request.use(config => {
 
-  if(config.url=="/api/user/login/telephone"){
+  if(
+    config.url=="/api/user/login/telephone" ||
+    config.url=="/api/dev/state/notes" ||
+    config.url=="/api/dev/state/realtime" ||
+    config.url=="/api/dev/state/history"
+  ){
     config.baseURL="http://192.168.0.190:10022"
   }
 
@@ -48,7 +53,7 @@ service.interceptors.response.use(
         duration: 5 * 1000
       })
       if(res.errorInf.code==-1){
-          MessageBox.confirm('你已被登出，可以取消继续留在该页面，或者重新登录', '确定登出', {
+          MessageBox.confirm('你的登陆状态已超时，可以取消继续留在该页面，或者重新登录', '确定登出', {
             confirmButtonText: '重新登录',
             cancelButtonText: '取消',
             type: 'warning'
@@ -86,6 +91,6 @@ service.interceptors.response.use(
 
     return Promise.reject(error)
   }
-)
+);
 
 export default service

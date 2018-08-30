@@ -27,6 +27,16 @@
       height: {
         type: String,
         default: '400px'
+      },
+      hData:{
+          type:Object,
+          default:function () {
+             return {
+                 note:"",
+                 tData:[],
+                 sData:[]
+             }
+          }
       }
     },
     data() {
@@ -55,6 +65,11 @@
       initChart() {
         //this.chart = echarts.init(this.$el, 'macarons')
         this.chart = echarts.init(this.$refs.chart, 'macarons')
+
+        this.pain();
+      },
+
+      pain(){
         var colors = ['#5793f3', '#d14a61', '#675bba'];
         this.chart.setOption( {
           color: colors,
@@ -66,7 +81,7 @@
             }
           },
           legend: {
-            data:['历史数据1']
+            data:[this.hData.note]
           },
           grid: {
             top: 70,
@@ -92,7 +107,7 @@
                   }
                 }
               },
-              data: ["2015-1", "2015-2", "2015-3", "2015-4", "2015-5", "2015-6", "2015-7", "2015-8", "2015-9", "2015-10", "2015-11", "2015-12"]
+              data: this.hData.tData
             }
           ],
           yAxis: [
@@ -102,10 +117,10 @@
           ],
           series: [
             {
-              name:'历史数据1',
+              name:this.hData.note,
               type:'line',
               smooth: true,
-              data: [3.9, 5.9, 11.1, 18.7, 48.3, 69.2, 231.6, 46.6, 55.4, 18.4, 10.3, 0.7]
+              data: this.hData.sData
             }
           ]
         })

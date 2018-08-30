@@ -26,7 +26,17 @@
       },
       height: {
         type: String,
-        default: '400px'
+        default: '370px'
+      },
+      hData:{
+        type:Object,
+        default:function () {
+          return {
+            note:"",
+            tData:[],
+            sData:[]
+          }
+        }
       }
     },
     data() {
@@ -56,6 +66,10 @@
         //this.chart = echarts.init(this.$el, 'macarons')
         this.chart = echarts.init(this.$refs.chart, 'macarons')
 
+        this.pain();
+      },
+
+      pain(){
         this.chart.setOption({
           color: ['#3398DB'],
           tooltip : {
@@ -66,7 +80,7 @@
           },
 
           legend: {
-            data:['历史数据2']
+            data:[this.hData.note]
           },
           grid: {
             left: '3%',
@@ -77,7 +91,7 @@
           xAxis : [
             {
               type : 'category',
-              data : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+              data : this.hData.rData,
               axisTick: {
                 alignWithLabel: true
               }
@@ -90,10 +104,10 @@
           ],
           series : [
             {
-              name:'历史数据2',
+              name:this.hData.note,
               type:'bar',
               barWidth: '60%',
-              data:[10, 52, 200, 334, 390, 330, 220]
+              data:this.hData.sData
             }
           ]
         })

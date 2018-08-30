@@ -142,6 +142,8 @@
     mounted(){
       this.fetchData()
     },
+
+
     methods: {
 
       handleCurrentChange(val){
